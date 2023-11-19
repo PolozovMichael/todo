@@ -1,0 +1,34 @@
+version: '2'
+
+services:
+  todo:
+    container_name: todo
+    build:
+      context: .
+      dockerfile: ./Dockerfile
+    ports:
+      - '5000:5000'
+    restart: 'on-failure'
+  cadvisor:
+    image: gcr.io/cadvisor/cadvisor:latest
+    container_name: todo-cadvisor
+    restart: always
+    volumes:
+      - /etc/localtime:/etc/localtime:ro
+      - /etc/timezone:/etc/timezone:ro
+      - /:/rootfs:ro
+      - /var/run:/var/run:rw
+      - /sys:/sys:ro
+      - /var/lib/docker:/var/lib/docker:ro
+      - /var/run/docker.sock:/var/run/docker.sock:rw
+    devices:
+      - /dev/kmsg:/dev/kmsg
+    depends_on:
+      - todo
+  prometheus:
+    image: prom/prometheus:latest
+    container_name: coin-api-prometheus
+    restart: always
+    volumes:
+      - /etc/localtime:/etc/localtime:ro
+      - /etc/timezone:/etc/timezone:ro
