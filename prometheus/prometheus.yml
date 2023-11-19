@@ -2,6 +2,6 @@ global:
   scrape_interval: 5s
 
 scrape_configs:
-  - job_name: 'todo'
+  - job_name: 'cadvisor'
     static_configs:
-      - targets: ['todo:8080']
+      - targets: ['todo-cadvisor:8080']
